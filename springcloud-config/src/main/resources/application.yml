@@ -1,0 +1,50 @@
+############################################################
+#
+# 配置服务config
+# web访问端口号  约定：7080
+#
+############################################################
+server:
+  port: 7080
+  tomcat:
+    uri-encoding: UTF-8
+
+############################################################
+#
+# 配置项目信息
+#
+############################################################
+#spring:
+#  profiles:
+#    active: dev   # yml中配置文件的环境配置，dev：开发环境，test：测试环境，prod：生产环境
+spring:
+  application:
+    name: springcloud-config
+  redis:
+    database: 0
+    host: 192.168.18.129
+    port: 6379
+    password: 123456
+    rabbitmq:
+      host: 192.168.18.137
+      port: 5672
+      username: admin
+      password: admin
+      virtual-host: imooc-news-dev
+
+############################################################
+#
+# eureka client 配置信息
+#
+############################################################
+eureka:
+  server:
+    hostname: localhost
+    port: 7000
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:7001/eureka/,http://localhost:7002/eureka/,http://localhost:7003/eureka/
+  #      defaultZone: http://${eureka.server.hostname}:${eureka.server.port}/eureka/
+

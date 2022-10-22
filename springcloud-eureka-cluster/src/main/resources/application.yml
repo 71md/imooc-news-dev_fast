@@ -1,0 +1,58 @@
+############################################################
+#
+# eureka注册中心
+# web访问端口号  约定：7001-7003
+#
+############################################################
+server:
+  port: ${PORT:7001}
+  tomcat:
+    uri-encoding: UTF-8
+
+############################################################
+#
+# 配置项目信息
+#
+############################################################
+#spring:
+#  profiles:
+#    active: dev   # yml中配置文件的环境配置，dev：开发环境，test：测试环境，prod：生产环境
+spring:
+  application:
+    name: springcloud-eureka-cluster
+  redis:
+    database: 0
+    host: 192.168.18.129
+    port: 6379
+    password: 123456
+  rabbitmq:
+    host: 192.168.18.137
+    port: 5672
+    username: admin
+    password: admin
+    virtual-host: imooc-news-dev
+
+############################################################
+#
+# eureka 配置信息
+#
+############################################################
+eureka:
+  instance:
+    # eureka 实例的hostname,可以是localname,也可以是自定义配置的hostname
+    hostname: eureka-cluster-${server.port}
+  other-node-port2: ${p2:7002}
+  other-node-port3: ${p3:7003}
+  client:
+    # 是否要把当前的eureka server注册到自己
+    register-with-eureka: false
+    # 从注册中心获得服务检索实例，server没有必要，直接false即可
+    fetch-registry: false
+    # 单实例配置自己的服务地址，高可用集群则配置多个地址
+    service-url:
+      defaultZone: http://localhost:${eureka.other-node-port2}/eureka/,http://localhost:${eureka.other-node-port3}/eureka/
+#      defaultZone: http://eureka-cluster-${eureka.other-node-port2}:${eureka.other-node-port2}/eureka/,http://eureka-cluster-${eureka.other-node-port3}:${eureka.other-node-port3}/eureka/
+#      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+    server:
+      enable-self-preservation: false   # 关闭eureka的自我保护功能
+      eviction-interval-timer-in-ms: 5000   # 清理无效节点的时间，可以缩短为5s，默认60s
